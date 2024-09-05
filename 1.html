@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Information Lookup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Insurance Information Lookup</h1>
+
+    <div class="form-group">
+        <label for="software">Select Pharmacy Software:</label>
+        <select id="software">
+            <option value="">--Choose Software--</option>
+            <option value="propel">Propel</option>
+            <option value="kroll">Kroll</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="insurance">Select Insurance Company:</label>
+        <select id="insurance">
+            <option value="">--Choose Insurance--</option>
+            <option value="adjudicare">AdjudiCare</option>
+        </select>
+    </div>
+
+    <button onclick="lookupInsurance()">Lookup Information</button>
+
+    <div id="result" class="result" style="display:none;">
+        <h2>Insurance Details</h2>
+        <p><strong>Insurance Adjudicator:</strong> <span id="adjudicator"></span></p>
+        <p><strong>Adjudicator Code:</strong> <span id="code"></span></p>
+        <p><strong>Carrier ID:</strong> <span id="carrier"></span></p>
+        <p><strong>Group ID:</strong> <span id="group"></span></p>
+        <p><strong>Client ID:</strong> <span id="client"></span></p>
+        <p><strong>Sample Card:</strong></p>
+        <img id="sampleCard" src="" alt="Sample Insurance Card" style="max-width: 100%; height: auto;">
+    </div>
+
+    <script>
+        function lookupInsurance() {
+            // Retrieve selected software and entered insurance card name
+            const software = document.getElementById('software').value;
+            const insurance = document.getElementById('insurance').value.trim().toLowerCase();
+
+            // Define a sample data set
+            const data = {
+                propel: {
+                    "adjudicare": {
+                        adjudicator: "Assure",
+                        code: "1234",
+                        carrier: "34",
+                        group: "Group ID",
+                        client: "Certificate # + Issue# (e.g. 012345678901)",
+                        image: "sample_assure_card.png"
+                    },
+                    "green shield": {
+                        adjudicator: "Green Shield",
+                        code: "5678",
+                        carrier: "GS123",
+                        group: "G54321",
+                        client: "C12345"
+                    }
+                },
+                kroll: {
+                    "blue cross": {
+                        adjudicator: "Blue Cross",
+                        code: "2345",
+                        carrier: "BC234",
+                        group: "G87654",
+                        client: "C67890"
+                    },
+                    "green shield": {
+                        adjudicator: "Green Shield",
+                        code: "6789",
+                        carrier: "GS234",
+                        group: "G43210",
+                        client: "C23456"
+                    }
+                }
+            };
+
+            // Lookup the corresponding details
+    if (!software || !insurance) {
+        alert("Please select both the pharmacy software and the insurance company.");
+    } else if (data[software] && data[software][insurance]) {
+        const details = data[software][insurance];
+        document.getElementById('adjudicator').textContent = details.adjudicator;
+        document.getElementById('code').textContent = details.code;
+        document.getElementById('carrier').textContent = details.carrier;
+        document.getElementById('group').textContent = details.group;
+        document.getElementById('client').textContent = details.client;
+        
+        // Update the image source
+        document.getElementById('sampleCard').src = details.image;
+        document.getElementById('result').style.display = 'block';
+    } else {
+        alert("Information not found. Please check your input.");
+        document.getElementById('result').style.display = 'none';
+    }
+}
+    </script>
+</body>
+</html>
